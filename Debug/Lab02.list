@@ -388,7 +388,7 @@ void update7SEG ( int index )
 
 08000394 <updateClockBuffer>:
 
-int hour = 15, minute = 8, second = 50;
+int hour = 15, minute = 8, second = 51;
 void updateClockBuffer()
 {
  8000394:	b480      	push	{r7}
