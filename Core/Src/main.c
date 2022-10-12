@@ -120,7 +120,7 @@ void update7SEG ( int index )
 	}
 }
 
-int hour = 15, minute = 8, second = 51;
+int hour = 15, minute = 8, second = 50;
 void updateClockBuffer()
 {
 	// correct the values
