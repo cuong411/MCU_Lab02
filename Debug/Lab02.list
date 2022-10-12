@@ -427,8 +427,8 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  set_timer1(50);
- 80003b0:	2032      	movs	r0, #50	; 0x32
+  set_timer1(25);
+ 80003b0:	2019      	movs	r0, #25
  80003b2:	f000 f931 	bl	8000618 <set_timer1>
   HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, GPIO_PIN_SET);
  80003b6:	2201      	movs	r2, #1
@@ -499,8 +499,8 @@ int main(void)
  8000420:	607a      	str	r2, [r7, #4]
  8000422:	4618      	mov	r0, r3
  8000424:	f7ff ff2a 	bl	800027c <update7SEG>
-		  set_timer1(50);
- 8000428:	2032      	movs	r0, #50	; 0x32
+		  set_timer1(25);
+ 8000428:	2019      	movs	r0, #25
  800042a:	f000 f8f5 	bl	8000618 <set_timer1>
 	  if(timer0_flag == 1)
  800042e:	e7da      	b.n	80003e6 <main+0x52>

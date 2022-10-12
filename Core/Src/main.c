@@ -156,7 +156,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  set_timer1(50);
+  set_timer1(25);
   HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, GPIO_PIN_SET);
@@ -178,7 +178,7 @@ int main(void)
 		  timer1_flag = 0;
 		  if(index_led > 3) index_led = 0;
 		  update7SEG(index_led++);
-		  set_timer1(50);
+		  set_timer1(25);
 	  }
   }
   /* USER CODE END 3 */
