@@ -119,6 +119,28 @@ void update7SEG ( int index )
 		break ;
 	}
 }
+
+int hour = 15, minute = 8, second = 50;
+void updateClockBuffer()
+{
+	// correct the values
+	if(second >= 60)
+	{
+	  second = 0;
+	  minute++;
+	}
+	if(minute >= 60)
+	{
+	  minute = 0;
+	  hour++;
+	}
+	if(hour >= 24) hour = 0;
+	// update da shit
+	led_buffer[0] = hour / 10;
+	led_buffer[1] = hour % 10;
+	led_buffer[2] = minute / 10;
+	led_buffer[3] = minute % 10;
+}
 /* USER CODE END 0 */
 
 /**
@@ -161,7 +183,6 @@ int main(void)
   HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, GPIO_PIN_SET);
-  int index_led = 0;
   while (1)
   {
     /* USER CODE END WHILE */
@@ -176,6 +197,9 @@ int main(void)
 	  if(timer1_flag == 1)
 	  {
 		  timer1_flag = 0;
+		  // add 10 to second for process burning
+		  second += 10;
+		  updateClockBuffer();
 		  if(index_led > 3) index_led = 0;
 		  update7SEG(index_led++);
 		  set_timer1(25);
