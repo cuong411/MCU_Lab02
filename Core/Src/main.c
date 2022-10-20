@@ -112,24 +112,35 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  // set enable time for each 7 segment led to half a second
   set_timer1(50);
+  // initial enables ports
   HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, GPIO_PIN_SET);
+  /* status:
+   * 1: display 1 on led0
+   * 2: display 2 on led1
+   * 3: display 3 on led2
+   * 0: display 0 on led3
+   */
   int status = 0;
   int num0 = 1, num1 = 2, num2 = 3, num3 = 0;
   while (1)
   {
     /* USER CODE END WHILE */
-
     /* USER CODE BEGIN 3 */
+	  // timer flag 0 has time cycle of 1 second
+	  // controls the red blinking led and DOT led
 	  if(timer0_flag == 1)
 	  {
 		  timer0_flag = 0;
 		  HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
 		  HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
 	  }
+	  // timer flag 1 has time cycle of 0.5 second
+	  // controls switching between 4 7 segments led
 	  if(timer1_flag == 1)
 	  {
 		  timer1_flag = 0;
