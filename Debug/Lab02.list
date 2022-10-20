@@ -427,9 +427,11 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  // set enable time for each 7 segment led to half a second
   set_timer1(50);
  80003b0:	2032      	movs	r0, #50	; 0x32
  80003b2:	f000 f931 	bl	8000618 <set_timer1>
+  // initial enables ports
   HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, GPIO_PIN_SET);
  80003b6:	2201      	movs	r2, #1
  80003b8:	2140      	movs	r1, #64	; 0x40
@@ -453,11 +455,11 @@ int main(void)
   int index_led = 0;
  80003e2:	2300      	movs	r3, #0
  80003e4:	607b      	str	r3, [r7, #4]
-  while (1)
   {
     /* USER CODE END WHILE */
-
     /* USER CODE BEGIN 3 */
+	  // timer flag 0 has time cycle of 1 second
+	  // controls the red blinking led and DOT led
 	  if(timer0_flag == 1)
  80003e6:	4b14      	ldr	r3, [pc, #80]	; (8000438 <main+0xa4>)
  80003e8:	681b      	ldr	r3, [r3, #0]
@@ -477,6 +479,8 @@ int main(void)
  80003fe:	480d      	ldr	r0, [pc, #52]	; (8000434 <main+0xa0>)
  8000400:	f000 fd00 	bl	8000e04 <HAL_GPIO_TogglePin>
 	  }
+	  // timer flag 1 has time cycle of 0.5 second
+	  // controls update7SEG() function
 	  if(timer1_flag == 1)
  8000404:	4b0d      	ldr	r3, [pc, #52]	; (800043c <main+0xa8>)
  8000406:	681b      	ldr	r3, [r3, #0]
