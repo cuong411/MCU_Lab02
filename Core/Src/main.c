@@ -156,7 +156,9 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  // set enable time for each 7 segment led to 0.25 second
   set_timer1(25);
+  // initial enables ports
   HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, GPIO_PIN_SET);
@@ -164,14 +166,17 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
     /* USER CODE BEGIN 3 */
+	  // timer flag 0 has time cycle of 1 second
+	  // controls the red blinking led and DOT led
 	  if(timer0_flag == 1)
 	  {
 		  timer0_flag = 0;
 		  HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
 		  HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
 	  }
+	  // timer flag 1 has time cycle of 0.25 second
+	  // controls update7SEG() function
 	  if(timer1_flag == 1)
 	  {
 		  timer1_flag = 0;
