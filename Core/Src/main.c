@@ -123,7 +123,7 @@ void update7SEG ( int index )
 int hour = 15, minute = 8, second = 51;
 void updateClockBuffer()
 {
-	// correct the values
+	// correct the values after add time in while loop
 	if(second >= 60)
 	{
 	  second = 0;
@@ -135,7 +135,7 @@ void updateClockBuffer()
 	  hour++;
 	}
 	if(hour >= 24) hour = 0;
-	// update da shit
+	// update those value to led buffer
 	led_buffer[0] = hour / 10;
 	led_buffer[1] = hour % 10;
 	led_buffer[2] = minute / 10;
@@ -178,7 +178,9 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  // set enable time for each 7 segment led to half a second
   set_timer1(25);
+  // initial enables ports
   HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, GPIO_PIN_SET);
@@ -186,7 +188,6 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
     /* USER CODE BEGIN 3 */
 	  if(timer0_flag == 1)
 	  {
@@ -194,11 +195,14 @@ int main(void)
 		  HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
 		  HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
 	  }
+	  // timer flag 1 has time cycle of 0.5 second
+	  // controls updateClockBuffer() and update7SEG() function
 	  if(timer1_flag == 1)
 	  {
 		  timer1_flag = 0;
-		  // add 10 to second for process burning
-		  second += 10;
+		  // the clock add 15 seconds to itself every 0.25 second in real time
+		  // meaning 1 minute every second in real time
+		  second += 15;
 		  updateClockBuffer();
 		  if(index_led > 3) index_led = 0;
 		  update7SEG(index_led++);
