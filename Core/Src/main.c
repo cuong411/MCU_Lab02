@@ -111,34 +111,44 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  // set enable time for each 7 segment led to half a second
   set_timer1(50);
+  // initial EN0 and EN1
   HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, GPIO_PIN_RESET);
-  int status = 0;
+  // status:
+  // 0: display 1 on led0
+  // 1: display 2 on led1
+  int status = 1;
   int num0 = 1, num1 = 2;
   while (1)
   {
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
+	  // timer flag 0 has time cycle of 1 second, controls the red blinking led
 	  if(timer0_flag == 1)
 	  {
 		  timer0_flag = 0;
 		  HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
 	  }
+	  // timer flag 1 has time cycle of 0.5 second
+	  // controls switching between 2 7 segments led
 	  if(timer1_flag == 1)
 	  {
 		  timer1_flag = 0;
 		  HAL_GPIO_TogglePin(EN0_GPIO_Port, EN0_Pin);
 		  HAL_GPIO_TogglePin(EN1_GPIO_Port, EN1_Pin);
-		  if(status == 0)
+		  // display number 1 on led0
+		  if(status == 1)
 		  {
 			  display7SEG(num0);
-			  status = 1;
+			  status = 0;
 		  }
+		  // display number 2 on led1
 		  else
 		  {
 			  display7SEG(num1);
-			  status = 0;
+			  status = 1;
 		  }
 		  set_timer1(50);
 	  }
