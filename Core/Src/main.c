@@ -59,8 +59,10 @@ static void MX_TIM2_Init(void);
 /* USER CODE BEGIN 0 */
 const int MAX_LED_MATRIX = 8;
 int index_led_matrix = 0;
+// represent letter A to display on led matrix
 uint8_t matrix_buffer[8] = {0x00, 0xFC, 0xFE, 0x33, 0x33, 0xFE, 0xFC, 0x00};
 
+// clear all the led on the matrix
 void clearLEDMatrix()
 {
 	HAL_GPIO_WritePin(ENM0_GPIO_Port, ENM0_Pin, GPIO_PIN_SET);
@@ -73,9 +75,12 @@ void clearLEDMatrix()
 	HAL_GPIO_WritePin(ENM7_GPIO_Port, ENM7_Pin, GPIO_PIN_SET);
 }
 
+// by the time this function is called, there is only a column is enabled
+// this function will measure which row to enable in order to display the wanted letter
 void displayLEDMatrix(uint8_t value)
 {
-	// this shit encrypt da input to measure which row to display in a single column
+	// by examine every bit in a matrix buffer value, the function can find out
+	// which row will be enabled, which will not
 	if((value & 0x01) == 0x01) HAL_GPIO_WritePin(ROW0_GPIO_Port, ROW0_Pin, GPIO_PIN_RESET);
 	else HAL_GPIO_WritePin(ROW0_GPIO_Port, ROW0_Pin, GPIO_PIN_SET);
 	if((value & 0x02) == 0x02) HAL_GPIO_WritePin(ROW1_GPIO_Port, ROW1_Pin, GPIO_PIN_RESET);
@@ -96,8 +101,9 @@ void displayLEDMatrix(uint8_t value)
 
 void updateLEDMatrix(int index)
 {
-	// this shit enable a column at a time
-	// and port those shitties from matrix_buffer to display function
+	// this function enable a column at a time
+	// and port the value corresponding to the enabled column
+	// from matrix_buffer to the display function
 	switch(index)
 	{
 	case 0:
@@ -187,16 +193,22 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  // timer flag 0 has time cycle of 1 second
+	  // controls the red blinking led
 	  if(timer0_flag == 1)
 	  {
 		  timer0_flag = 0;
 		  HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
 	  }
+	  // timer flag 1 has time cycle of 0.5 second
+	  // controls lad matrix
 	  if(timer1_flag == 1)
 	  {
 		  timer1_flag = 0;
 		  if(index_led_matrix >= 8) index_led_matrix = 0;
+		  // reset the led matrix
 		  clearLEDMatrix();
+		  // display on led matrix
 		  updateLEDMatrix(index_led_matrix++);
 		  set_timer1(50);
 	  }
